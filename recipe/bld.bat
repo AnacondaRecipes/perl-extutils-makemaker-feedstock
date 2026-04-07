@@ -5,6 +5,7 @@ IF exist Build.PL (
     Build
     IF %ERRORLEVEL% NEQ 0 exit 1
     Build test
+    IF %ERRORLEVEL% NEQ 0 exit 1
     :: Make sure this goes in site
     Build install --installdirs site
     IF %ERRORLEVEL% NEQ 0 exit 1
