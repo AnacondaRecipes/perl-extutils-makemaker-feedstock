@@ -19,7 +19,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - make  # [unix]
-    - msys2_make  # [win]
+    - msys2-make  # [win]
   host:
     - perl {{ perl }}
   run:
