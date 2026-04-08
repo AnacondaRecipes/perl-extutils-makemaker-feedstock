@@ -1,36 +1,28 @@
 {% set name = "perl-extutils-makemaker" %}
-{% set version = "7.35_06" %}
-{% set sha256 = "cd87cbfbdb5610dff7ba936cef9bdc9a85dfc50847d583051bb08c9b610bcd51" %}
+{% set version = "7.78" %}
+{% set sha256 = "43b33c20f8d82dba7cc48f8cd702f8fc9811e9d07880886dfd31b7077bd4a3a6" %}
 
 package:
   name: {{ name }}
-  version: {{ version.replace('_', '') }}
+  version: {{ version }}
 
 source:
   url: https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
-# If this is a new build for the same version, increment the build
-# number. If you do not include this key, it defaults to 0.
 build:
   number: 0
 
 requirements:
   build:
-    - perl
-    #- perl-data-dumper
-    #- perl-encode
-    #- perl-file-basename
-    #- perl-pod-man
-    #- perl-file-spec
-
+    # So upstream XS-related tests can invoke a compiler.
+    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
+    - make  # [unix]
+  host:
+    - perl {{ perl }}
   run:
     - perl
-    #- perl-data-dumper
-    #- perl-encode
-    #- perl-file-basename
-    #- perl-pod-man
-    #- perl-file-spec
 
 test:
   # Perl 'use' tests
@@ -68,14 +60,19 @@ test:
     - ExtUtils::Mksymlists
     - ExtUtils::testlib
 
-  # You can also put a file called run_test.pl (or run_test.py) in the recipe
-  # that will be run at test time.
-
 about:
   home: https://metacpan.org/release/ExtUtils-MakeMaker
-  license: perl_5
-  summary: 'Create a module Makefile'
-
-# See
-# http://docs.continuum.io/conda/build.html for
-# more information about meta.yaml
+  dev_url: https://github.com/Perl-Toolchain-Gang/ExtUtils-MakeMaker
+  doc_url: https://metacpan.org/pod/ExtUtils::MakeMaker
+  summary: Create a module Makefile
+  description: |
+    ExtUtils::MakeMaker is the standard Perl toolchain module for turning module
+    source into a Makefile or an equivalent build system so distributions can be
+    built and installed. It is widely used by CPAN and in-tree Perl extension builds.
+  # Single SPDX id only: compound "GPL-1.0-or-later OR Artistic-1.0-Perl" is written into
+  # MSVC activation batch by conda-build/PBP; cmd.exe treats bare OR as a command and fails
+  # with "or was unexpected at this time" (perl-feedstock may not hit the same code path).
+  license: Artistic-1.0-Perl
+  license_family: OTHER
+  license_file:
+    - LICENSE
